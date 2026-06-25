@@ -23,4 +23,27 @@ public class MemberController {
     public List<Member> getAll() {
         return memberRepository.findAll();
     }
+
+    @GetMapping("/{id}")
+    public Member get(@PathVariable("id") Long id) {
+        return memberRepository.findById(id).orElse(null);
+    }
+
+    @PutMapping("/{id}")
+    public Member put(@PathVariable("id") Long id, @RequestBody Member member) {
+        member.setId(id);
+        return memberRepository.save(member);
+    }
+
+    @PatchMapping("/{id}")
+    public Member patch(@PathVariable("id") Long id, @RequestBody Member patch) {
+        Member member = memberRepository.findById(id).orElse(null);
+        if (member != null) {
+            if (patch.getName() != null) member.setName(patch.getName());
+            if (patch.getEmail() != null) member.setEmail(patch.getEmail());
+            if (patch.getAge() != null) member.setAge(patch.getAge());
+            memberRepository.save(member);
+        }
+        return member;
+    }
 }
