@@ -1,7 +1,11 @@
 package com.example.demo.controller;
 
+import com.example.demo.dto.MemberRequest;
+import com.example.demo.dto.MemberResponse;
 import com.example.demo.repository.MemberRepository;
+import com.example.demo.service.MemberService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import com.example.demo.model.Member;
@@ -13,11 +17,12 @@ import java.util.List;
 @RequiredArgsConstructor
 public class MemberController {
     private final MemberRepository memberRepository;
+    private final MemberService memberService;
 
-    @PostMapping
-    public Member post(@RequestBody Member member) {
-        return memberRepository.save(member);
-    }
+//    @PostMapping
+//    public Member post(@RequestBody Member member) {
+//        return memberRepository.save(member);
+//    }
 
     @GetMapping
     public List<Member> getAll() {
@@ -45,5 +50,16 @@ public class MemberController {
             memberRepository.save(member);
         }
         return member;
+    }
+
+    @DeleteMapping("/{id}")
+    public void delete(@PathVariable("id") Long id) {
+        memberRepository.deleteById(id);
+    }
+
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    public MemberResponse post(@RequestBody MemberRequest memberRequest) {
+        return memberService.create(memberRequest);
     }
 }
