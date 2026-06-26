@@ -7,13 +7,16 @@ import com.example.demo.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class MemberService {
     private final MemberRepository memberRepository;
 
     public MemberResponse create(MemberRequest memberRequest) {
-        Member member =  Member.builder()
+        Member member = Member.builder()
                 .name(memberRequest.getName())
                 .email(memberRequest.getEmail())
                 .age(memberRequest.getAge())
@@ -29,5 +32,23 @@ public class MemberService {
                 .email(member.getEmail())
                 .age(member.getAge())
                 .build();
+    }
+
+//    public List<MemberResponse> findAll() {
+//        List<Member> members = memberRepository.findAll();
+//        List<MemberResponse> memberResponses = new ArrayList<>();
+//        for (Member member : members) {
+//            MemberResponse memberResponse = mapToMemberResponse(member);
+//            memberResponses.add(memberResponse);
+//        }
+//        return memberResponses;
+//    }
+
+    public List<MemberResponse> findAll() {
+        return memberRepository
+                .findAll()
+                .stream()
+                .map(this::mapToMemberResponse)
+                .toList();
     }
 }

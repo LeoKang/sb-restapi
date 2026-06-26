@@ -19,14 +19,15 @@ public class MemberController {
     private final MemberRepository memberRepository;
     private final MemberService memberService;
 
-//    @PostMapping
-//    public Member post(@RequestBody Member member) {
-//        return memberRepository.save(member);
-//    }
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    public MemberResponse post(@RequestBody MemberRequest memberRequest) {
+        return memberService.create(memberRequest);
+    }
 
     @GetMapping
-    public List<Member> getAll() {
-        return memberRepository.findAll();
+    public List<MemberResponse> getAll() {
+        return memberService.findAll();
     }
 
     @GetMapping("/{id}")
@@ -55,11 +56,5 @@ public class MemberController {
     @DeleteMapping("/{id}")
     public void delete(@PathVariable("id") Long id) {
         memberRepository.deleteById(id);
-    }
-
-    @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
-    public MemberResponse post(@RequestBody MemberRequest memberRequest) {
-        return memberService.create(memberRequest);
     }
 }
