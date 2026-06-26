@@ -31,14 +31,16 @@ public class MemberController {
     }
 
     @GetMapping("/{id}")
-    public Member get(@PathVariable("id") Long id) {
-        return memberRepository.findById(id).orElse(null);
+    public MemberResponse get(@PathVariable("id") Long id) {
+//        return memberRepository.findById(id).orElse(null);
+        return memberService.findById(id);
     }
 
     @PutMapping("/{id}")
-    public Member put(@PathVariable("id") Long id, @RequestBody Member member) {
-        member.setId(id);
-        return memberRepository.save(member);
+    public MemberResponse put(@PathVariable("id") Long id, @RequestBody MemberRequest memberRequest) {
+//        member.setId(id);
+//        return memberRepository.save(member);
+        return memberService.update(id, memberRequest);
     }
 
     @PatchMapping("/{id}")

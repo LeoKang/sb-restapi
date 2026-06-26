@@ -2,6 +2,7 @@ package com.example.demo.service;
 
 import com.example.demo.dto.MemberRequest;
 import com.example.demo.dto.MemberResponse;
+import com.example.demo.exception.NotFoundException;
 import com.example.demo.model.Member;
 import com.example.demo.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
@@ -25,14 +26,6 @@ public class MemberService {
         return mapToMemberResponse(member);
     }
 
-    private MemberResponse mapToMemberResponse(Member member) {
-        return MemberResponse.builder()
-                .id(member.getId())
-                .name(member.getName())
-                .email(member.getEmail())
-                .age(member.getAge())
-                .build();
-    }
 
 //    public List<MemberResponse> findAll() {
 //        List<Member> members = memberRepository.findAll();
@@ -50,5 +43,46 @@ public class MemberService {
                 .stream()
                 .map(this::mapToMemberResponse)
                 .toList();
+    }
+
+    public MemberResponse findById(Long id) {
+        Member member = memberRepository.findById(id).orElseThrow(NotFoundException::new);
+
+        return mapToMemberResponse(member);
+    }
+
+    public MemberResponse update(Long id, MemberRequest memberRequest) {
+        Member member = memberRepository.findById(id).orElseThrow(NotFoundException::new);
+        member.setName(memberRequest.getName());
+        member.setEmail(memberRequest.getEmail());
+        member.setAge(memberRequest.getAge());
+        memberRepository.save(member);
+        return mapToMemberResponse(member);
+    }
+
+    public MemberResponse patch(Long id, MemberRequest memberRequest) {
+        Member member = memberRepository.findById(id).orElseThrow(NotFoundException::new);
+
+        if (memberRequest.getName() != null) {
+            member.setName(memberRequest.getName());
+        }
+        if (memberRequest.getEmail() != null) {
+            member.setEmail(memberRequest.getEmail());
+        }
+        if (memberRequest.getAge() != null) {
+            member.setAge(memberRequest.getAge());
+        }
+
+        memberRepository.save(member);
+        return mapToMemberResponse(member);
+    }
+
+    private MemberResponse mapToMemberResponse(Member member) {
+        return MemberResponse.builder()
+                .id(member.getId())
+                .name(member.getName())
+                .email(member.getEmail())
+                .age(member.getAge())
+                .build();
     }
 }
