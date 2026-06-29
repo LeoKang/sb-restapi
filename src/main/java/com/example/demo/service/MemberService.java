@@ -85,4 +85,9 @@ public class MemberService {
                 .age(member.getAge())
                 .build();
     }
+
+    public void deleteById(Long id) {
+        Member member = memberRepository.findById(id).orElseThrow(NotFoundException::new);
+        memberRepository.delete(member);
+    }
 }

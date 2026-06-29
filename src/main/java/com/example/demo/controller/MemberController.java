@@ -57,6 +57,6 @@ public class MemberController {
 
     @DeleteMapping("/{id}")
     public void delete(@PathVariable("id") Long id) {
-        memberRepository.deleteById(id);
+        memberService.deleteById(id);
     }
 }
