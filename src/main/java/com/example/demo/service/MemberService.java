@@ -37,18 +37,18 @@ public class MemberService {
 //        return memberResponses;
 //    }
 
+    public MemberResponse findById(Long id) {
+        Member member = memberRepository.findById(id).orElseThrow(NotFoundException::new);
+
+        return mapToMemberResponse(member);
+    }
+
     public List<MemberResponse> findAll() {
         return memberRepository
                 .findAll()
                 .stream()
                 .map(this::mapToMemberResponse)
                 .toList();
-    }
-
-    public MemberResponse findById(Long id) {
-        Member member = memberRepository.findById(id).orElseThrow(NotFoundException::new);
-
-        return mapToMemberResponse(member);
     }
 
     public MemberResponse update(Long id, MemberRequest memberRequest) {
@@ -77,6 +77,11 @@ public class MemberService {
         return mapToMemberResponse(member);
     }
 
+    public void deleteById(Long id) {
+        Member member = memberRepository.findById(id).orElseThrow(NotFoundException::new);
+        memberRepository.delete(member);
+    }
+
     private MemberResponse mapToMemberResponse(Member member) {
         return MemberResponse.builder()
                 .id(member.getId())
@@ -84,10 +89,5 @@ public class MemberService {
                 .email(member.getEmail())
                 .age(member.getAge())
                 .build();
-    }
-
-    public void deleteById(Long id) {
-        Member member = memberRepository.findById(id).orElseThrow(NotFoundException::new);
-        memberRepository.delete(member);
     }
 }
