@@ -27,11 +27,11 @@ public class MemberController {
     private final MemberService memberService;
     private final ArticleService articleService;
 
-    @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
-    public MemberResponse post(@RequestBody MemberRequest memberRequest) {
-        return memberService.create(memberRequest);
-    }
+//    @PostMapping
+//    @ResponseStatus(HttpStatus.CREATED)
+//    public MemberResponse post(@RequestBody MemberRequest memberRequest) {
+//        return memberService.create(memberRequest);
+//    }
 
     @GetMapping
     public List<MemberResponse> getAll() {
@@ -61,6 +61,12 @@ public class MemberController {
             memberRepository.save(member);
         }
         return member;
+    }
+
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    public List<MemberResponse> postBatch(@RequestBody List<MemberRequest> memberRequests) {
+        return memberService.createBatch(memberRequests);
     }
 
     @DeleteMapping("/{id}")

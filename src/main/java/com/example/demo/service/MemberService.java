@@ -7,6 +7,7 @@ import com.example.demo.model.Member;
 import com.example.demo.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -80,6 +81,11 @@ public class MemberService {
     public void deleteById(Long id) {
         Member member = memberRepository.findById(id).orElseThrow(NotFoundException::new);
         memberRepository.delete(member);
+    }
+
+    @Transactional
+    public List<MemberResponse> createBatch(List<MemberRequest> memberRequests) {
+        return memberRequests.stream().map(this::create).toList();
     }
 
     private MemberResponse mapToMemberResponse(Member member) {
