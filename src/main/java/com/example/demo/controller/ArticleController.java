@@ -26,6 +26,11 @@ public class ArticleController {
         }
     }
 
+    @GetMapping("/{id}")
+    public ArticleResponse get(@PathVariable("id") Long id) {
+        return articleService.findById(id);
+    }
+
     @GetMapping("/{id}/articles")
     public void getArticle(@PathVariable("id") Long id, HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.getSession().getServletContext().getRequestDispatcher("/api/articles?memberId=" + id)

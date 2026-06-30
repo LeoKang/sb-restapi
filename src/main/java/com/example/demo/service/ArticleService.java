@@ -44,6 +44,11 @@ public class ArticleService {
                 .toList();
     }
 
+    public ArticleResponse findById(Long id) {
+        Article article = articleRepository.findById(id).orElseThrow(NotFoundException::new);
+        return mapToArticleResponse(article);
+    }
+
     private ArticleResponse mapToArticleResponse(Article article) {
         return ArticleResponse.builder()
                 .id(article.getId())
@@ -55,6 +60,4 @@ public class ArticleService {
                 .name(article.getMember().getName())
                 .email(article.getMember().getEmail()).build();
     }
-
-
 }
