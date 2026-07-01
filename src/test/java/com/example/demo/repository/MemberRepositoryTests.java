@@ -3,6 +3,7 @@ package com.example.demo.repository;
 import com.example.demo.model.Member;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -10,6 +11,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
+@DisplayName("회원 리포지터리 테스트")
 public class MemberRepositoryTests {
 
     @Autowired
@@ -29,6 +31,7 @@ public class MemberRepositoryTests {
     }
 
     @Test
+    @DisplayName("조건 검색 테스트")
     public void testUserCase1() {
         assertThat(memberRepository.count()).isEqualTo(4);
         assertThat(memberRepository.findByName("윤서준").size()).isEqualTo(1);
@@ -43,6 +46,7 @@ public class MemberRepositoryTests {
     }
 
     @Test
+    @DisplayName("정렬순서 테스트")
     public void testUserCase2() {
         assertThat(memberRepository.findAllByOrderByNameAsc().size()).isEqualTo(4);
         assertThat(memberRepository.findAllByOrderByNameAsc().get(0).getName()).isEqualTo("공미영");
